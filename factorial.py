@@ -6,9 +6,6 @@ class Factorial:
       self.num=num
 
    def factorial(self,num):
-      """
-      Calculate n!. n! = 1 * 2 * 3 * … * (n-1) * n,  0! = 1. n >= 0.
-      """
       if num == 0:
         return 1
       factor=1
