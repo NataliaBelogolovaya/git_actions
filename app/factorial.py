@@ -1,6 +1,5 @@
 from math import factorial
 
-
 class Factorial:
    def __init__(self, num):
       self.num=num
@@ -12,7 +11,6 @@ class Factorial:
       for i in range(1, num+1):
         factor=factor*i
       return factor
-
 
 def main():
 
