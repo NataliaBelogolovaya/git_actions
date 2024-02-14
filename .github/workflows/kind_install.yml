@@ -13,6 +13,8 @@ jobs:
           version: "v0.11.1"
       - name: Testing
         run: |
+          mkdir  my_files
+          touch my_files/artifact.txt
           kubectl cluster-info > my_files/artifact.txt
           kubectl get pods -n kube-system >> my_files/artifact.txt
           echo "current-context:" $(kubectl config current-context) >>  my_files/artifact.txt
