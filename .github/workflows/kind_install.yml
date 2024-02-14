@@ -13,12 +13,13 @@ jobs:
           version: "v0.11.1"
       - name: Testing
         run: |
-          kubectl cluster-info > artifact.txt
-          kubectl get pods -n kube-system >> artifact.txt
-          echo "current-context:" $(kubectl config current-context) >> artifact.txt
-          echo "environment-kubeconfig:" ${KUBECONFIG} >> artifact.txt
+          kubectl cluster-info > /var/artifact.txt
+          kubectl get pods -n kube-system >> /var/artifact.txt
+          echo "current-context:" $(kubectl config current-context) >> /var/artifact.txt
+          echo "environment-kubeconfig:" ${KUBECONFIG} >> /var/artifact.txt
       - name: Download testing results
         uses: actions/download-artifact@v4
         with:
           name: artifact.txt
+          path: /var/artifact.txt
 
