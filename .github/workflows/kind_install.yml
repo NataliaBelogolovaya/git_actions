@@ -13,10 +13,14 @@ jobs:
           version: "v0.11.1"
       - name: Testing
         run: |
-          kubectl cluster-info > Info
-          kubectl get pods -n kube-system > Pods
+          kubectl cluster-info 
+          kubectl get pods -n kube-system 
           echo "current-context:" $(kubectl config current-context) 
           echo "environment-kubeconfig:" ${KUBECONFIG} 
-          echo "Info" $Info
-          echo "Pods" $Pods
-     
+          kubectl get nodes
+          kubectl get pods -A
+          kubectl version
+        shell: bash
+      - name: Testing 2 
+        run: kubectl get pods -A
+        shell: bash
