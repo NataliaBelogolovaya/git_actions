@@ -3,8 +3,8 @@ name: Docker Image Publish
 on:
   release:
     types: [published]
-  push:
-    branches: [ "master" ]
+  workflow_dispatch:
+    #ranches: [ "master" ]
     # Publish semver tags as releases.
     #tags: [ 'v*.*.*' ]
   pull_request:
