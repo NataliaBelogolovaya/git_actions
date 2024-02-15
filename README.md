@@ -117,7 +117,11 @@ Time: 1m
 Nodes:
 ```
 
+<<<<<<< HEAD
 ### Minikube
+=======
+# Minikube
+>>>>>>> 1bf09d8503bb2fe37c9e26095ed66767dc6e51b3
 
 ```
 Client Version: v1.29.1
