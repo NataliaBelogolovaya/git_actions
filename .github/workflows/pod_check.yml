@@ -20,12 +20,12 @@ jobs:
           proxy_port: ${{ secrets.PROXY_PORT }} #-v
           script: |
             kubectl get pods -A --context="k8s" | grep  'Running\|Completed ' > k8s.log   
-            echo "k8s_log=$(cat k8s.log)" >> "$GITHUB_OUTPUT"
-            echo "k8s_count=$(cat k8s.log | wc -l)" >> "$GITHUB_OUTPUT"
+            echo "::set-output name=k8s_log::$(cat k8s.log)"
+            echo "::set-output name=k8s_count::$(cat k8s.log | wc -l)"
+            echo "GOOD!"
            
            
       - name: Upload Crashed Pods List k3s      
-        if: steps.kube_pod.outputs.k8s_count != 0 
         uses: actions/upload-artifact@v4
         with:
             name: Failed pods 
