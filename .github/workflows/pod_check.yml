@@ -21,3 +21,4 @@ jobs:
           script: |
             pwd
             ls -al
+            ls $HOME
