@@ -28,13 +28,14 @@ jobs:
         id: form_file 
         run: |
             echo ${{steps.kube_pod.outputs.k8s_log}} > k8s.log 
-            echo ${{steps.kube_pod.outputs.k8s_count}}
-            echo "${{steps.kube_pod.outputs.k8s_count}}"
+            echo ${steps.kube_pod.outputs.k8s_count}
+            echo "steps.kube_pod.outputs.k8s_count"
         shell: bash    
 
             
         
       - name: Upload Crashed Pods List k3s 
+        if: steps.kube_pod.outputs.k8s_count != 0 
         uses: actions/upload-artifact@v4
         with:
             name: Failed pods 
