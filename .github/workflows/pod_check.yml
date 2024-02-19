@@ -30,4 +30,5 @@ jobs:
         run: |
             echo "steps.kube_pod.outputs.k3s.log" > k3s_out.log
             echo "steps.kube_pod.outputs.k8s.log" > k8s_out.log
-             
+            echo k3s_out.log
+            echo k8s_out.log
