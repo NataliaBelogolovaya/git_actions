@@ -23,21 +23,21 @@ jobs:
           proxy_port: ${{ secrets.PROXY_PORT }} #-v
           script: |
             kubectl get pods -A --context="k8s" | grep 'Running\|Completed ' > k8s.log   
-            echo "k8s=good" >> $GITHUB_OUTPUT
-            echo "k8s_log=$(cat k8s.log | grep 'Running\|Completed ')" >> $GITHUB_OUTPUT
+            echo "k8s=good" >> $env:GITHUB_OUTPUT
+            echo "k8s_log=$(cat k8s.log | grep 'Running\|Completed ')" >> $env:GITHUB_OUTPUT
             
-           
+         
       - name: Check Crash pods
         id: form_file 
+        
+        env:
+          OUTPUT1: ${{steps.kube_pod.outputs.k8s_log}}
+          OUTPUT2: ${{steps.kube_pod.outputs.k8s}}
         run: |
-          echo "${{ steps.kube_pod.outputs.k8s_log }}" > k8s.log 
-          echo "${{ steps.kube_pod.outputs.k8s }}
-          steps:" 
-          echo "$env.k8s" 
+          echo "$OUTPUT1" > k8s.log 
+          echo "$OUTPUT2"
         shell: bash    
 
-            
-        
       - name: Upload Crashed Pods List k3s 
         if: steps.kube_pod.outputs.k8s_count != 0 
         uses: actions/upload-artifact@v4
