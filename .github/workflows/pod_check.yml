@@ -21,7 +21,7 @@ jobs:
           script: |
             kubectl get pods -A --context="k8s" | grep 'Running\|Completed ' > k8s.log   
             echo "k8s=good" >> $env:GITHUB_OUTPUT
-            echo "k8s_log=$(cat k8s_out.log | grep 'Running\|Completed ')" >> $env:GITHUB_OUTPUT
+            echo "k8s_log=$(cat k8s.log | grep 'Running\|Completed ')" >> $env:GITHUB_OUTPUT
             
            
       - name: Check Crash pods
@@ -29,7 +29,7 @@ jobs:
         run: |
           echo "${{ env.k8s_log}}"> k8s.log 
           echo "${{ env.k8s_log}}" 
-          echo "${{ env.k8s}}" 
+          echo "$env.k8s" 
         shell: bash    
 
             
