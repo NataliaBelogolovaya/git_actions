@@ -18,4 +18,6 @@ jobs:
           proxy_username: ${{ secrets.PROXY_USERNAME }}
           proxy_key: ${{ secrets.PROXY_KEY }}
           proxy_port: ${{ secrets.PROXY_PORT }}
-          script: ls -al
+          script: |
+            pwd
+            ls -al
