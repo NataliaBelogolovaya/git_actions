@@ -20,17 +20,14 @@ jobs:
           proxy_port: ${{ secrets.PROXY_PORT }} #-v
           script: |
             kubectl get pods -A --context="k8s" | grep 'Running\|Completed ' > k8s.log   
-            echo "::set-output name=k8s_log::$(cat k8s.log)"
-            echo "::set-output name=k8s_count::$(cat k8s.log | wc -l)"
-            echo "logs.log=$(cat k8s.log)" >> $GITHUB_OUTPUT
+            echo "k8s_log=$(cat k8s_out.log | grep 'Running\|Completed ')" >> $env:GITHUB_OUTPUT
             
            
       - name: Check Crash pods
         id: form_file 
         run: |
-            echo ${{steps.kube_pod.outputs.k8s_log}} > k8s.log 
-            
-            
+          echo "${{ env.k8s_log}} > k8s.log 
+          echo "${{ env.k8s_log}} 
         shell: bash    
 
             
@@ -40,6 +37,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
             name: Failed pods 
-            path: logs.log
+            path: k8s.log
 
        
