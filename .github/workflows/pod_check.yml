@@ -26,7 +26,7 @@ jobs:
            
       - name: Check Crash pods
         id: form_file 
-        run: echo "ks.l8og=$(cat steps.kube_pod.outputs.k8s_.log)" >> $GITHUB_OUTPUT     
+        run: echo "k8s.log=$(cat steps.kube_pod.outputs.k8s_.log)" >> $GITHUB_OUTPUT     
         
       - name: Upload Crashed Pods List k3s 
         uses: actions/upload-artifact@v4
