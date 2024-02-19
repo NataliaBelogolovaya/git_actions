@@ -28,7 +28,6 @@ jobs:
         id: form_file 
         run: |
             echo ${{steps.kube_pod.outputs.k8s_log}} > k8s.log 
-            echo ${steps.kube_pod.outputs.k8s_count}
             echo "steps.kube_pod.outputs.k8s_count"
         shell: bash    
 
