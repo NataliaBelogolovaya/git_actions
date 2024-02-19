@@ -21,13 +21,14 @@ jobs:
           proxy_key: ${{ secrets.PROXY_KEY }}
           proxy_port: ${{ secrets.PROXY_PORT }}
           script: |
-            kubectl get pods -A  --context="k3s" >> k3s.log
-            kubectl get pods -A  --context="k8s" >> k8s.log
-            {"k3s_log=$(cat k3s.log)"
-             "k8s_log=$(cat k8s.log)" } >> $GITHUB_OUTPUT
-      - name: Check Crash pods
-        id: check-pods
-        run: |
-            echo "steps.kube_pod.outputs.k3s.log" > k3s_out.log
-            echo "steps.kube_pod.outputs.k8s.log" > k8s_out.log
+            kubectl get pods -A --context="k3s" >> k3s.log
+            kubectl get pods -A --context="k8s" >> k8s.log
+        #{"k3s_log=$(cat k3s.log)"
+        #"k8s_log=$(cat k8s.log)" } >> $GITHUB_OUTPUT
+
+     # - name: Check Crash pods
+       # id: check-pods
+        #run: |
+        #    echo "steps.kube_pod.outputs.k3s.log" > k3s_out.log
+        #    echo "steps.kube_pod.outputs.k8s.log" > k8s_out.log
              
