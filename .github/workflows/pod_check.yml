@@ -4,6 +4,9 @@ on: [push]
 jobs:
   pods:
     runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.kube_pod.outputs.k8s }}
+      output2: ${{ steps.kube_pod.outputs.k8s_log }}
     steps:
 
       - name: SSH connect to remoute host
@@ -20,15 +23,16 @@ jobs:
           proxy_port: ${{ secrets.PROXY_PORT }} #-v
           script: |
             kubectl get pods -A --context="k8s" | grep 'Running\|Completed ' > k8s.log   
-            echo "k8s=good" >> $env:GITHUB_OUTPUT
-            echo "k8s_log=$(cat k8s.log | grep 'Running\|Completed ')" >> $env:GITHUB_OUTPUT
+            echo "k8s=good" >> $GITHUB_OUTPUT
+            echo "k8s_log=$(cat k8s.log | grep 'Running\|Completed ')" >> $GITHUB_OUTPUT
             
            
       - name: Check Crash pods
         id: form_file 
         run: |
-          echo "${{ env.k8s_log}}"> k8s.log 
-          echo "${{ env.k8s_log}}" 
+          echo "${{ steps.kube_pod.outputs.k8s_log }}" > k8s.log 
+          echo "${{ steps.kube_pod.outputs.k8s }}
+          steps:" 
           echo "$env.k8s" 
         shell: bash    
 
