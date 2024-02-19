@@ -4,10 +4,12 @@ on: [push]
 jobs:
   pods:
     runs-on: ubuntu-latest
+    outputs:
+        output1: ${{ steps.check-pods.outputs.crash_k3s }}
+        output2: ${{ steps.check-pods.outputs.crash_k8s }}
     steps:
-      #- name: Checkout repository  
-       # uses: actions/checkout@master
       - name: SSH connect to remoute host
+        id: kube_pod
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST }}
@@ -19,6 +21,13 @@ jobs:
           proxy_key: ${{ secrets.PROXY_KEY }}
           proxy_port: ${{ secrets.PROXY_PORT }}
           script: |
-            pwd
-            ls -al
-            ls $HOME
+            kubectl get pods -A  --context="k3s" >> k3s.log
+            kubectl get pods -A  --context="k8s" >> k8s.log
+            {"k3s_log=$(cat k3s.log)"
+             "k8s_log=$(cat k8s.log)" } >> $GITHUB_OUTPUT
+      - name: Check Crash pods
+        id: check-pods
+        run: |
+            echo "steps.kube_pod.outputs.k3s.log" > k3s_out.log
+            echo "steps.kube_pod.outputs.k8s.log" > k8s_out.log
+             
