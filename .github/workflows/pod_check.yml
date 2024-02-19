@@ -17,22 +17,16 @@ jobs:
           proxy_host: ${{ secrets.PROXY_HOST }}
           proxy_username: ${{ secrets.PROXY_USERNAME }}
           proxy_key: ${{ secrets.PROXY_KEY }}
-          proxy_port: ${{ secrets.PROXY_PORT }}
+          proxy_port: ${{ secrets.PROXY_PORT }} #-v
           script: |
-            kubectl get pods -A --context="k8s" > k8s.log
-            
-            echo "k8s_log=$(cat k8s.log)" >> $GITHUB_OUTPUT
+            kubectl get pods -A --context="k8s" | grep  'Running\|Completed ' > k8s.log   
+            echo "k8s_log=$(cat k8s.log)" >> "$GITHUB_OUTPUT"
+            echo "k8s_count=$(cat k8s.log | wc -l)" >> "$GITHUB_OUTPUT"
            
-      - name: Check Crash pods
-        id: count_faild_pods
-        run: |
-            
-            echo "steps.kube_pod.outputs.k8s.log" > k8s_out.log
-            echo "fail_pods_k8s=$(cat k8s_out.log | grep -v 'Running\|Completed ' | wc -l)" >> $GITHUB_OUTPUT
-        
+           
       - name: Upload Crashed Pods List k3s      
-        if: steps.count_faild_pods.outputs.fail_pods_k8s == 0 
+        if: steps.kube_pod.outputs.k8s_count != 0 
         uses: actions/upload-artifact@v4
         with:
             name: Failed pods 
-            path: k8s_out.log
+            path: k8s_log
