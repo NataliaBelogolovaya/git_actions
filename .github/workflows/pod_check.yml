@@ -23,9 +23,8 @@ jobs:
           script: |
             kubectl get pods -A --context="k3s" >> k3s.log
             kubectl get pods -A --context="k8s" >> k8s.log
-        #{"k3s_log=$(cat k3s.log)"
-        #"k8s_log=$(cat k8s.log)" } >> $GITHUB_OUTPUT
-
+            {"k3s_log=$(cat k3s.log)" "k8s_log=$(cat k8s.log)" } >> $GITHUB_OUTPUT
+            echo $GITHUB_OUTPUT
      # - name: Check Crash pods
        # id: check-pods
         #run: |
