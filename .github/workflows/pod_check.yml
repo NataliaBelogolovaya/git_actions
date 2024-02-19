@@ -20,17 +20,17 @@ jobs:
           script: |
             kubectl get pods -A --context="k3s" > k3s.log
             kubectl get pods -A --context="k8s" > k8s.log
-            {"k3s_log=$(cat k3s.log)" "k8s_log=$(cat k8s.log)" } >> $GITHUB_OUTPUT
+            echo "k3s_log=$(cat k3s.log)" >> $GITHUB_OUTPUT
+            echo "k8s_log=$(cat k8s.log)" >> $GITHUB_OUTPUT
            
       - name: Check Crash pods
         id: count_faild_pods
         run: |
             echo "steps.kube_pod.outputs.k3s.log" > k3s_out.log
             echo "steps.kube_pod.outputs.k8s.log" > k8s_out.log
-            { 
-              "fail_pods_k3s=$(cat k3s_out.log | grep -v 'Running\|Completed ' | wc -l)"
-              "fail_pods_k8s=$(cat k8s_out.log | grep -v 'Running\|Completed ' | wc -l)"
-            } >> $GITHUB_OUTPUT
+            echo "fail_pods_k3s=$(cat k3s_out.log | grep -v 'Running\|Completed ' | wc -l)" >> $GITHUB_OUTPUT
+            echo "fail_pods_k8s=$(cat k8s_out.log | grep -v 'Running\|Completed ' | wc -l)" >> $GITHUB_OUTPUT
+             
              
         shell: bash
 
