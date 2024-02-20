@@ -40,7 +40,7 @@ jobs:
           proxy_key: ${{ secrets.PROXY_KEY }}
           proxy_port: ${{ secrets.PROXY_PORT }}
           source: "k8s.log"
-          target: ./logs/ 
+          target: ./
 
       - name: copy file via ssh 
         run: cat ./logs/k8s.log
