@@ -1,6 +1,5 @@
 name: Check pods
-on: [push]
-  #workflow_dispatch:
+on: [push , workflow_dispatch ]
 jobs:
   pods:
     runs-on: ubuntu-latest
