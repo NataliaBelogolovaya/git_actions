@@ -31,15 +31,16 @@ jobs:
         with:
           direction: download
           host: ${{ secrets.HOST }}
-          fingerprint: true
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
+          insecure_ignore_fingerprint: true
           port: ${{ secrets.PORT }}
           proxy_host: ${{ secrets.PROXY_HOST }}
           proxy_fingerprint: true
           proxy_username: ${{ secrets.PROXY_USERNAME }}
           proxy_key: ${{ secrets.PROXY_KEY }}
           proxy_port: ${{ secrets.PROXY_PORT }}
+          insecure_proxy_ignore_fingerprint: true
           source: "/root/k8s.log"
           target: .
 
