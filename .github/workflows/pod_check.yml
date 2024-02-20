@@ -45,7 +45,7 @@ jobs:
           target: "/root/k8s.log"
 
       - name: copy file via ssh 
-        run: cat ./k8s.log
+        run: cat /root/k8s.log
         shell: bash
    
 
