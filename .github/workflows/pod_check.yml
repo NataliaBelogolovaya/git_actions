@@ -22,14 +22,14 @@ jobs:
           proxy_key: ${{ secrets.PROXY_KEY }}
           proxy_port: ${{ secrets.PROXY_PORT }} #-v
           script: |
-            kubectl get pods -A --context="k8s" | grep 'Running\|Completed ' > k8s.log   
+            kubectl get pods -A --context="k8s" | grep -E 'Running|Completed '
+            kubectl get pods -A --context="k8s" | grep -E 'Running|Completed ' > k8s.log   
             echo "k8s=good" >> $env:GITHUB_OUTPUT
-            echo "k8s_log=$(cat k8s.log | grep 'Running\|Completed ')" >> $env:GITHUB_OUTPUT
+            echo "k8s_log=$(cat k8s.log)" >> $env:GITHUB_OUTPUT
             
          
       - name: Check Crash pods
-        id: form_file 
-        
+        id: form_file         
         env:
           OUTPUT1: ${{steps.kube_pod.outputs.k8s_log}}
           OUTPUT2: ${{steps.kube_pod.outputs.k8s}}
