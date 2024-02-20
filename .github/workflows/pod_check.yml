@@ -23,8 +23,9 @@ jobs:
           proxy_port: ${{ secrets.PROXY_PORT }} #-v          
           script: |
             kubectl get pods -A --context="k8s" | grep -E 'Running|Completed' > k8s.log   
-            echo "::set-output name=k8s_log::$(cat k8s.log)"
-            echo "::set-output name=k8s_count::$(cat k8s.log | wc -l)"
+            echo "::set-output name={k8s_log}::{$(cat k8s.log)}"
+            echo "::set-output name={k8s_count}::{$(cat k8s.log | wc -l)}"
+            echo "{k8s_log2}={$(cat k8s.log)}" >> $GITHUB_OUTPUT
             echo "GOOD!"  
             
          
@@ -32,6 +33,7 @@ jobs:
         id: form_file     
         run: |
           echo "${{ steps.kube_pod.outputs.k8s_log }}" > k8s.log 
+          echo "${{ steps.kube_pod.outputs.k8s_log2 }}" >> k8s.log 
           cat  k8s.log 
         shell: bash    
 
