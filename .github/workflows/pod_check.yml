@@ -21,10 +21,7 @@ jobs:
           proxy_port: ${{ secrets.PROXY_PORT }} #-v          
           script: |
             kubectl get pods -A --context="k8s" | grep -E 'Running|Completed' > k8s.log   
-            echo "::set-output name={k8s_log}::{$(cat k8s.log)}"
-            echo "::set-output name={k8s_count}::{$(cat k8s.log | wc -l)}"
-            echo "{k8s_log2}={$(cat k8s.log)}" >> $GITHUB_OUTPUT
-            echo "GOOD!"  
+            
             
       - name: Download file via SSH
         uses: nicklasfrahm/scp-action@main
@@ -44,9 +41,17 @@ jobs:
           source: "/root/k8s.log"
           target: "./k8s.log"
 
-      - name: copy file via ssh 
-        run: cat ./k8s.log
+      - name: copy file via ssh
+        id: count_fails_pods 
+        run: |
+          echo "fails_pods=$(cat ./k8s.log | wc -l)" >> $GITHUB_OUTPUT
+          cat ./k8s.log
         shell: bash
    
 
-       
+      - name: Upload Crashed Pods List k3s 
+        if:  steps.count_fails_pods.outputs.fails_pods !=1 
+        uses: actions/upload-artifact@v4
+        with:
+            name: Failed pods 
+            path: ./k8s.log
