@@ -48,10 +48,19 @@ jobs:
           cat ./k8s.log
         shell: bash
    
-
       - name: Upload Crashed Pods List k3s 
-        if:  steps.count_fails_pods.outputs.fails_pods !=1 
+        if:  steps.count_fails_pods.outputs.fails_pods !=0 
         uses: actions/upload-artifact@v4
         with:
             name: Failed pods 
             path: ./k8s.log
+
+      - name: Slack notification 
+        uses: rtCamp/action-slack-notify@v2
+        if: steps.count_fails_pods.outputs.fails_pods !=0
+        env:
+          SLACK_CHANNEL: alarm_channel
+          SLACK_COLOR: 'red'
+          SLACK_USERNAME: k8s
+          SLACK_TITLE: "Pods crashed!"
+          SLACK_WEBHOOK: ${{ secrets.WEBHOOK_SLACK}}
