@@ -4,9 +4,7 @@ on: [push]
 jobs:
   pods:
     runs-on: ubuntu-latest
-    outputs:
-      output1: ${{ steps.kube_pod.outputs.k8s }}
-      output2: ${{ steps.kube_pod.outputs.k8s_log }}
+    
     steps:
 
       - name: SSH connect to remoute host
@@ -40,10 +38,10 @@ jobs:
           proxy_key: ${{ secrets.PROXY_KEY }}
           proxy_port: ${{ secrets.PROXY_PORT }}
           source: "k8s.log"
-          target: ./
+          target: .
 
       - name: copy file via ssh 
-        run: cat ./logs/k8s.log
+        run: cat ./k8s.log
         shell: bash
    
 
