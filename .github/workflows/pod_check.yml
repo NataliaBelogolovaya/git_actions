@@ -28,15 +28,23 @@ jobs:
             echo "{k8s_log2}={$(cat k8s.log)}" >> $GITHUB_OUTPUT
             echo "GOOD!"  
             
-         
-      - name: Check Crash pods
-        id: form_file     
-        run: |
-          echo "${{ steps.kube_pod.outputs.k8s_log }}" > k8s.log 
-          echo "${{ steps.kube_pod.outputs.k8s_log2 }}" >> k8s.log 
-          cat  k8s.log 
-        shell: bash    
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          proxy_host: ${{ secrets.PROXY_HOST }}
+          proxy_username: ${{ secrets.PROXY_USERNAME }}
+          proxy_key: ${{ secrets.PROXY_KEY }}
+          proxy_port: ${{ secrets.PROXY_PORT }}
+          source: "k8s.log"
+          target: ./logs/ 
 
+      - name: copy file via ssh 
+        run: cat ./logs/k8s.log
+        shell: bash
    
 
        
