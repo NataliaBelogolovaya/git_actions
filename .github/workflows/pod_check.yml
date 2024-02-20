@@ -41,8 +41,8 @@ jobs:
           proxy_key: ${{ secrets.PROXY_KEY }}
           proxy_port: ${{ secrets.PROXY_PORT }}
           insecure_proxy_ignore_fingerprint: true
-          source: "/root/k8s.log"
-          target: .
+          source: .
+          target: "/root/k8s.log"
 
       - name: copy file via ssh 
         run: cat ./k8s.log
