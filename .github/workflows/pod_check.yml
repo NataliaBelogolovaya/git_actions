@@ -21,7 +21,7 @@ jobs:
           proxy_port: ${{ secrets.PROXY_PORT }} #-v          
           script: |
             kubectl get pods -A --context="k8s" | grep -E 'Running|Completed' > k8s.log   
-            
+            kubectl get pods -A --context="k3s" | grep -E 'Running|Completed' >> k8s.log
             
       - name: Download file via SSH
         uses: nicklasfrahm/scp-action@main
