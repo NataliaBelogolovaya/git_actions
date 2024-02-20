@@ -37,7 +37,7 @@ jobs:
           proxy_username: ${{ secrets.PROXY_USERNAME }}
           proxy_key: ${{ secrets.PROXY_KEY }}
           proxy_port: ${{ secrets.PROXY_PORT }}
-          source: "k8s.log"
+          source: "/root/k8s.log"
           target: .
 
       - name: copy file via ssh 
