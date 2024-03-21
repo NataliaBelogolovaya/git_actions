@@ -33,7 +33,7 @@ jobs:
           VAR="$(find . -name "flask-psql-*" | sed 's/\.\///g' )"
           echo $VAR
           helm repo index flask-psql  
-          cat index.yaml
+          cat flask-psql/index.yaml
         shell: bash
           
 
