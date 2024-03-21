@@ -23,26 +23,34 @@ jobs:
       - name: package creating
         run: |
           ls -al 
-          helm package flask-psql              
+          helm package flask-psql 
+        
         shell: bash
       
       - name: package creating
         run: |
           ls -al 
           find . -name "flask-psql-*"
-          VAR="$(find . -name "flask-psql-*" | sed 's/\.\///g' )"
+          VAR="$(find ./ -name "flask-psql-*" )"
           echo $VAR
           helm repo index flask-psql  
           cat flask-psql/index.yaml
+          cp $VAR flask-psql
+        shell: bash
+
+      - name: copy package
+        run: |
+          ls -al 
+          cp $VAR flask-psql
+          ls -al flask-psql
         shell: bash
 
       - uses: antaljanosbenjamin/single-commit-publish@master
         with:
           github-token: ${{ secrets.TOKEN_HELM }}
           branch: gh_pages
-          source-dir: helm
-          files-and-dirs: "flask-psql $VAR "    
-
+          source-dir: flask-psql
+          files-and-dirs: "${{ github.workspace }}/flask-psql"    
 
 
       #- name: Run chart-releaser
