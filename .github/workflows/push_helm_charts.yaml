@@ -40,9 +40,9 @@ jobs:
 
       - name: copy package
         run: |
-          ls -al 
-          cp $VAR flask-psql
           ls -al flask-psql
+          cp $VAR flask-psql
+         
         shell: bash
 
       - uses: antaljanosbenjamin/single-commit-publish@master
