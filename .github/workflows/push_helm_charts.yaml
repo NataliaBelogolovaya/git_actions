@@ -19,33 +19,20 @@ jobs:
      
       - name: Install Helm
         uses: azure/setup-helm@v3     
-
-      - name: package creating
-        run: |
-          ls -al 
-          helm package flask-psql 
-        
-        shell: bash
       
       - name: package creating
         run: |
           ls -al 
-          find . -name "flask-psql-*"
+          helm package flask-psql
           VAR="$(find ./ -name "flask-psql-*" )"
-          echo $VAR
+          echo "this is $VAR"
           helm repo index flask-psql  
           cat flask-psql/index.yaml
           cp $VAR flask-psql
         shell: bash
 
-      - name: copy package
-        run: |
-          ls -al flask-psql
-          cp $VAR flask-psql
-         
-        shell: bash
-
-      - uses: antaljanosbenjamin/single-commit-publish@master
+      - name: pull
+        uses: antaljanosbenjamin/single-commit-publish@master
         with:
           github-token: ${{ secrets.TOKEN_HELM }}
           branch: gh_pages
