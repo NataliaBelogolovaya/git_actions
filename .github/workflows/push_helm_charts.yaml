@@ -20,8 +20,20 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v3     
 
-      - name: cmd
-        run: ls -al      
+      - name: package creating
+        run: |
+          ls -al 
+          helm package flask-psql              
+        shell: bash
+      
+      - name: package creating
+        run: |
+          ls -al 
+          find . -name "flask-psql-*"
+          VAR="$(find . -name "flask-psql-*" | sed 's/\.\///g' )"
+          echo $VAR
+          helm repo index flask-psql  
+          cat index.yaml
         shell: bash
           
 
