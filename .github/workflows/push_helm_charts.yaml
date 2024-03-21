@@ -8,20 +8,30 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+       #with:
+          #fetch-depth: 0
+
+      #- name: Configure Git
+       # run: |
+       #   git config user.name "NataliaBelogolovaya"
+        #  git config user.email "belogolovayanv@gmail.com"
+
+     # - name: Install Helm
+      #  uses: azure/setup-helm@v3
+
+     # - name: Run chart-releaser
+      #  uses: helm/chart-releaser-action@v1.6.0
+       # with:
+        #  charts_dir: flask-psql
+        #env:
+         # CR_TOKEN: "${{ secrets.TOKEN_HELM }}"
+      
+       # uses: J12934/helm-gh-pages-action@master
+       # with:
+         # access-token: ${{ secrets.TOKEN_HELM }}
+      - name: Run chart-releaser   
+        uses: dave-mcconnell/helm-gh-pages-microservices@master
         with:
-          fetch-depth: 0
-
-      - name: Configure Git
-        run: |
-          git config user.name "NataliaBelogolovaya"
-          git config user.email "belogolovayanv@gmail.com"
-
-      - name: Install Helm
-        uses: azure/setup-helm@v3
-
-      - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.6.0
-        with:
-          charts_dir: flask-psql
-        env:
-          CR_TOKEN: "${{ secrets.TOKEN_HELM }}"
+          access-token: ${{ secrets.TOKEN_HELM }}
+          source-charts-folder: 'flask-psql'  # location of helm charts in your code repo
+          destination-repo: nataliabelogolovaya/git_actions
