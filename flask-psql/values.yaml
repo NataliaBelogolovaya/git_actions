@@ -1,0 +1,102 @@
+
+replicaCount: 1
+name: flask-psql
+namespace: project
+
+image: 
+  repository: docker.io/nataliyamyslivets/sa-repo
+  pullPolicy: IfNotPresent
+  tag: "flask-psql"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: 
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+podSecurityContext: {}
+securityContext: {}
+
+secrets:
+  secret_name: project-secret
+  type: Opaque
+  key_names:   #(key as env name)
+    key_pass: db_pass
+    key_user: db_user
+    key_sip: db_server_ip
+    key_port: db_port
+  keys:    
+    db_pass: YXBwYWRtaW4= #appadmin    
+    db_user: YXBwYWRtaW4= #appadmin   
+    db_server_ip: MTkyLjE2OC4yMDIuMTM= #192.168.202.13   
+    db_port: NTQzMg== #5432
+  
+  
+securityContext:
+  runAsUser: 0
+
+resources:
+  requests:
+    cpu: 2
+    memory: 2Gi
+  limits:
+    cpu: 3
+    memory: 3Gi
+
+ports:
+  name: db-port
+  containerPort: 5000
+ 
+volumes: 
+  name: flask-psql
+  server: 192.168.37.105
+  path: /mnt/IT-Academy/nfs-data/sa2-27-24/nmyslivets/db-data
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: 
+  name: flask-psql
+  mountPath: /var/psql-logs
+
+service:
+  type: ClusterIP
+  name: srv-flask-psql
+  portname: slave
+  port: 5000
+
+ingress:
+  enabled: false
+  name: "ingress-flask-psql"  
+  classname: nginx
+  hosts:
+    host: project.k8s-13.sa
+    path: /
+    pathType: Prefix
+   
+
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

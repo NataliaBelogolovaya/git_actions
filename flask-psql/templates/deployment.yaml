@@ -1,0 +1,85 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.namespace }}
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.secrets.secret_name }}
+  namespace: {{ .Values.namespace }}
+type:  {{ .Values.secrets.type }}
+data:
+  db_pass: {{ .Values.secrets.keys.db_pass}} #appadmin
+  db_user: {{ .Values.secrets.keys.db_user}} #appadmin
+  db_server_ip: {{ .Values.secrets.keys.db_server_ip}} #192.168.202.13
+  db_port: {{ .Values.secrets.keys.db_port}} #5432
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.name }}
+    spec:
+      containers:
+        - name: {{ .Values.name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: {{ .Values.secrets.key_names.key_pass }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secrets.secret_name }}
+                  key: {{ .Values.secrets.key_names.key_pass}}
+            - name: {{ .Values.secrets.key_names.key_user}}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secrets.secret_name}}
+                  key: {{ .Values.secrets.key_names.key_user }}
+            - name: {{ .Values.secrets.key_names.key_sip }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secrets.secret_name }}
+                  key: {{ .Values.secrets.key_names.key_sip }}
+            - name: {{ .Values.secrets.key_names.key_port }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secrets.secret_name }}
+                  key: {{ .Values.secrets.key_names.key_port }}  
+        
+          ports:
+            - name: {{ .Values.ports.name }}
+              containerPort: {{ .Values.ports.containerPort }}
+              
+          securityContext:
+            runAsUser: {{ .Values.securityContext.runAsUser }}
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+          
+          volumeMounts:
+            - name: {{ .Values.volumeMounts.name }}
+              mountPath: {{ .Values.volumeMounts.mountPath }}  # /var/lib/postgresql/12/main
+      volumes:    
+        - name: {{ .Values.volumes.name }}
+          nfs:
+            server: {{ .Values.volumes.server }}
+            path: {{ .Values.volumes.path }}
+---
+
