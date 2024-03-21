@@ -35,7 +35,13 @@ jobs:
           helm repo index flask-psql  
           cat flask-psql/index.yaml
         shell: bash
-          
+
+      - uses: antaljanosbenjamin/single-commit-publish@master
+        with:
+          github-token: ${{ secrets.TOKEN_HELM }}
+          branch: gh_pages
+          source-dir: helm
+          files-and-dirs: "flask-psql $VAR "    
 
 
 
