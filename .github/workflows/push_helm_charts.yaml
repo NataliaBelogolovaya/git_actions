@@ -1,4 +1,4 @@
-name: flask-app-ci
+name: helm-flask-app-psql
 on: [ workflow_dispatch, push ]
 jobs:
   release:
@@ -35,3 +35,4 @@ jobs:
           access-token: ${{ secrets.TOKEN_HELM }}
           source-charts-folder: 'flask-psql'  # location of helm charts in your code repo
           destination-repo: nataliabelogolovaya/git_actions
+          destination-charts-folder: 'flask-psql'
