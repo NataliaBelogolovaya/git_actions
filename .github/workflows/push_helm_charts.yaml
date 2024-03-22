@@ -26,9 +26,9 @@ jobs:
           helm package flask-psql
           VAR="$(find ./ -name "flask-psql-*" )"
           echo "this is $VAR"          
-          cat flask-psql/index.yaml
           cp $VAR flask-psql
           helm repo index flask-psql
+          cat flask-psql/index.yaml
         shell: bash
 
       - name: Publish
