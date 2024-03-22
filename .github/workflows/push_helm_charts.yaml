@@ -14,7 +14,7 @@ jobs:
 
       - name: Configure Git
         run: |        
-          git config user.name "$nataliabelogolovaya"
+          git config user.name "nataliabelogolovaya"
           git config user.email "belogolovayanv@gmail.com"
      
       - name: Install Helm
@@ -37,5 +37,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TOKEN_HELM }}
           COMMIT_FILES: flask-psql/*
           REPO_FULLNAME: NataliaBelogolovaya/git_actions
-          BRANCH: gh_pages 
+          BRANCH: main 
 
