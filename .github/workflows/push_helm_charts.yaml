@@ -32,14 +32,13 @@ jobs:
         shell: bash
 
       - name: push
-        uses: dciborow/commit@0.0.2
+        uses: github-actions-x/commit@v2.9
         with:
           github-token: ${{ secrets.TOKEN_HELM }}
           push-branch: 'gh_pages'
-          commit-message: 'publish'
+          commit-message: 'publish helm page'
           force-add: 'true'
-          force-push: 'true'
-          files: flask-psql/
+          files: 'flask-psql/'
           name: commiter name
           email: my.github@email.com 
 
