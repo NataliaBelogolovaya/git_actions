@@ -13,7 +13,7 @@ jobs:
           fetch-depth: 0
 
       - name: Configure Git
-        run: |
+        run: |        
           git config user.name "$nataliabelogolovaya"
           git config user.email "belogolovayanv@gmail.com"
      
@@ -31,20 +31,11 @@ jobs:
           cp $VAR flask-psql
         shell: bash
 
-      - name: pull
-        uses: antaljanosbenjamin/single-commit-publish@master
-        with:
-          github-token: ${{ secrets.TOKEN_HELM }}
-          branch: gh_pages
-          source-dir: flask-psql
-          files-and-dirs: "${{ github.workspace }}/flask-psql"    
+      - name: Publish
+        uses: selenehyun/gh-push@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_HELM }}
+          COMMIT_FILES: flask-psql/*
+          REPO_FULLNAME: NataliaBelogolovaya/git_actions
+          BRANCH: master 
 
-
-      #- name: Run chart-releaser
-       # uses: helm/chart-releaser-action@v1.6.0
-       # with:
-        #  charts_dir: flask-psql
-        #env:
-         # CR_TOKEN: "${{ secrets.TOKEN_HELM }}"
-
-      

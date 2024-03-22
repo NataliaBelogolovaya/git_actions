@@ -1,14 +1,14 @@
 name: Docker Image Publish
 
-on:
-  release:
-    types: [published]
-  workflow_dispatch:
+on: [workflow_dispatch]
+  #release:
+    #types: [published]
+  #workflow_dispatch:
     #ranches: [ "master" ]
     # Publish semver tags as releases.
     #tags: [ 'v*.*.*' ]
-  pull_request:
-    branches: [ "master" ]
+  #pull_request:
+   # branches: [ "master" ]
 
 jobs:
   push_to_registries:
