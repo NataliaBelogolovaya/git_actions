@@ -1,5 +1,5 @@
 name: Create cluster using Minikube
-on: [push]
+on: [workflow_dispatch ]
 jobs:
   minikube:
     runs-on: ubuntu-latest
