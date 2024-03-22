@@ -31,13 +31,17 @@ jobs:
           cp $VAR flask-psql
         shell: bash
 
-      - name: pull
-        uses: antaljanosbenjamin/single-commit-publish@master
+      - name: push
+        uses: dciborow/commit@0.0.2
         with:
           github-token: ${{ secrets.TOKEN_HELM }}
-          branch: gh_pages
-          source-dir: flask-psql
-          files-and-dirs: "${{ github.workspace }}/flask-psql"    
+          push-branch: 'gh_pages'
+          commit-message: 'publish'
+          force-add: 'true'
+          force-push: 'true'
+          files: flask-psql/
+          name: commiter name
+          email: my.github@email.com 
 
 
       #- name: Run chart-releaser
