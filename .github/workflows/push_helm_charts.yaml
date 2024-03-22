@@ -37,5 +37,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TOKEN_HELM }}
           COMMIT_FILES: flask-psql/*
           REPO_FULLNAME: NataliaBelogolovaya/git_actions
-          BRANCH: master 
+          BRANCH: gh_pages 
 
