@@ -45,9 +45,7 @@ jobs:
       contents: write
     runs-on: ubuntu-latest    
     steps: 
-      - env:
-          TAG: ${{needs.docker-build.outputs.tag}}
-        run: echo "$TAG"
+      
 
       - name: Checkout
         uses: actions/checkout@v3
@@ -63,6 +61,8 @@ jobs:
         uses: azure/setup-helm@v3 
         
       - name: replace image tag
+        env:
+          TAG: ${{needs.docker-build.outputs.tag}}
         run:  |
           sed -i "s/appVersion: .*/appVersion: $TAG/g" flask-psql/Chart.yaml
           sed -i "s/version: .*/version: $TAG/g" flask-psql/Chart.yaml
@@ -70,9 +70,8 @@ jobs:
           cat flask-psql/Chart.yaml
           cat flask-psql/values.yaml | grep "tag: "
         shell: bash
-
-
         
+       
       - name: package creating
         run: |
             ls -al 
