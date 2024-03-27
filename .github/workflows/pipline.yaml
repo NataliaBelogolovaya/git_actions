@@ -64,10 +64,11 @@ jobs:
         
       - name: replace image tag
         run:  |
-          sed -i 's/appVersion: \".*\"/appVersion: $TAG/g' flask-psql/Chart.yaml
-          sed -i "s/tag: \".*\"/tag: $TAG/g" flask-psql/values.yaml  
+          sed -i "s/appVersion: .*/appVersion: $TAG/g" flask-psql/Chart.yaml
+          sed -i "s/version: .*/version: $TAG/g" flask-psql/Chart.yaml
+          sed -i "s/tag: .*/tag: $TAG/g" flask-psql/values.yaml  
           cat flask-psql/Chart.yaml
-          cat flask-psql/values.yaml | grep "tag"
+          cat flask-psql/values.yaml | grep "tag: "
         shell: bash
 
 
