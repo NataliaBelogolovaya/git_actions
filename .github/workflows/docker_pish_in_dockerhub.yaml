@@ -25,4 +25,4 @@ jobs:
           context: ./app_files
           #file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/sa-repo:flask-app
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/sa-repo:flask-psql
