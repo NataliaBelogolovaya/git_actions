@@ -22,7 +22,7 @@ jobs:
       - name: package creating
         run: |
           ls -al 
-          cd /app_files/
+          cd ./app_files/
           ls -al 
         shell: bash
       - name: package creating
