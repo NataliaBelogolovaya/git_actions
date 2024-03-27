@@ -22,13 +22,18 @@ jobs:
       - name: package creating
         run: |
           ls -al 
-          cat ./app_files/Dockerfile
+          cd /app_files/
+          ls -al 
+        shell: bash
+      - name: package creating
+        run: |
+          ls -al 
         shell: bash
 
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: ./app_files/
+          context: .
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/sa-repo:latest
