@@ -1,0 +1,83 @@
+name: flask-app-ci
+on:
+  push:
+    branches:
+      - "main"
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+    outputs:
+        tag: ${{ steps.tag_version.outputs.new_tag }}
+    steps:
+      
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.TOKEN }}
+      
+      
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./app_files
+          #file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/sa-repo:${{ steps.tag_version.outputs.new_tag }}
+
+
+
+  helm-release:
+    needs: docker-build
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest    
+    steps: 
+      - env:
+          TAG: ${{needs.docker-build.outputs.tag}}
+        run: echo "$TAG"
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |        
+            git config user.name "nataliabelogolovaya"
+            git config user.email "belogolovayanv@gmail.com"
+        
+      - name: Install Helm
+        uses: azure/setup-helm@v3     
+        
+      - name: package creating
+        run: |
+            ls -al 
+            helm package flask-psql
+            VAR="$(find ./ -name "flask-psql-*" )"
+            echo "this is $VAR"          
+            cp $VAR flask-psql
+            helm repo index flask-psql
+            cat flask-psql/index.yaml
+        shell: bash
+
+      - name: Publish
+        uses: selenehyun/gh-push@master
+        env:
+            GITHUB_TOKEN: ${{ secrets.TOKEN_HELM }}
+            COMMIT_FILES: flask-psql/*
+            REPO_FULLNAME: NataliaBelogolovaya/helm_pages
+            BRANCH: main 
+        
