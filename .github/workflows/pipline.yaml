@@ -1,4 +1,4 @@
-name: flask-app-ci
+name: paipline-flask-app
 on:
   push:
     branches:
@@ -60,7 +60,15 @@ jobs:
             git config user.email "belogolovayanv@gmail.com"
         
       - name: Install Helm
-        uses: azure/setup-helm@v3     
+        uses: azure/setup-helm@v3 
+        
+      - name: replace image tag
+        run:  |
+          cat flask-psql/Chart.yaml |  grep "appVersion:" | sed -e "s/\".*\"/$TAG/g"
+          cat flask-psql/Chart.yaml  
+        shell: bash
+
+
         
       - name: package creating
         run: |
